@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice #<%= order.order_id %></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0; /* Remove default margin */
+            padding: 20px; /* Add padding for spacing */
+            font-family: Arial, sans-serif; /* Use a clean font */
+            width: 100%; /* Ensure full width */
+            height: auto; /* Allow height to adjust based on content */
+        }
+        .container-fluid {
+            max-width: 8.5in; /* Set max width for portrait */
+            margin: 0 auto; /* Center the container */
+            height: 11in; /* Set height for portrait */
+            padding: 0; /* Remove padding from container */
+            overflow: hidden; /* Prevent overflow */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+            background: white; /* Set background to white */
+        }
+        .header, .footer {
+            text-align: center;
+        }
+        .address {
+            margin: 20px 0;
+        }
+        .address p {
+            margin: 5px 0;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .details th {
+            background-color: #f8f9fa;
+        }
+        /* Print Styles */
+        @media print {
+            .container-fluid {
+                width: 100%; /* Full width for printing */
+                height: auto; /* Allow height to adjust for content */
+            }
+            .header, .footer {
+                page-break-after: avoid;
+                page-break-before: avoid;
+            }
+            .details {
+                page-break-inside: auto;
+            }
+            .details tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            .details th, .details td {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            .total {
+                page-break-inside: avoid;
+                page-break-before: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="header">
+            <h1>Fresh Produce Invoice</h1>
+            <p>Thank you for choosing our organic vegetables!</p>
+            <p>(Original for Recipient)</p>
+        </div>
+        
+        <div class="address">
+            <p>Sold By :</p>
+            <p><strong>FARM FRESH ORGANIC</strong></p>
+            <p>*MES SENIOR COLLEGE, Mayur Colony, kothrud</p>
+            <p>PUNE, MAHARASHTRA, 4110338</p>
+            <p>IN</p>
+            <p>PAN No: HSJCC1483E</p>
+            <p>GST Registration No: 27HSJCC0421E1Z4</p>
+            <p>Dynamic QR Code:</p>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAAXNSR0IArs4c6QAAF0FJREFUeF7tXe2B6zYOpCrJSyXJqyR5lVxSSd5VkqSSXCrxLWyvbFnEEBiBsj7gn7skBQ4wBAhB5FBKuZR9/76WUv5SpvBPKeULMb2B6NOjy38+Bv2NGLgHJpoY/yul/Kj88+dSyp+E/JvpIoZwIoLUp1v5axLEbqITgrxgmQSx49itZY/VMglSUZeymqYH6WbaMQPvmiANF54hVoyN0KNsN8SyS7ZrgjQ0lwShTTum49UM7bYY81DTKHahkiBzQHtgkpv0CgISX27hhzJRyBgkg8JksbSsTA8skHy/gCwW0s03kNmDmNjXpREKkUN0UPuhTfombOs+X1UHCA+0+ephKOqYQyl/XIbyq5JvQwRZVU7yYWwYJST4Tj5zrW6IICK7zGELP/V1wC4IUkr5o5Tyq4LkLggCgE6CvJ8iOkGGUi7Ki5DNeJAjEATYwDoEIWKnALtNDxIAomUIgwd5jwVYhG+0WYcgAYISQwCCDN9LuWSIRYBa62IgSNCT1h/mpAS57p+SIEH2dkCCjB4vniDbcaanDrFk8pE/2fM8pf4mWmYJgmS8FjgSthQ9b0nlagkIhG+PLBY7N61YlCWIpF2Z9DzC68W+Jk3Ds1jLitDqVilVq78rM2QJgqp55V2HIxd/FVqUJmNu4deDIEzhKluLhUIs1qsivVAvT9k07zKC1KexcYJchU6CzHWXBKnYcxLk/T4kPYiiA2XVTw9SwSswxEoPothjepD0ICMCGWJliDUi0FgZhj+DP0Y8xx6ESJspK3eGWL4wd/8h1lDK70oaZZLFerExauL3l1RaFktLW7Y8iNbPp0pb6//6snCmQSV7pP20FHD/ECtmUaHsxJ7FmrY8wiYdWYz2yS0iiJBDK/s2WaezEUp9O4camzPz7k8QdjbTfp0JMn1YEmSutCTIHBP2RWG+B6ksCivsQcy+mllJkyARBLmpKAnyHoKYfXUSZAoVCi0zxDpomre5B6n4m13tQcz+8oEEszDYCTIVKEtNzOv1rSEVYg2lfL2sd7Lirghiwf+FRH0JMhUoCWJR0FMbP0Fu2qWyEw3ZtO8UfrgTudYd7UGEWChNyqSHpQL4JyfGreZ/Kw1k3lp1rXgQrch08Sad8ILaHCk7sad5z5XFYsrgEUHEmCUtW/uhhaFl0NH/16p52c+vFxMkcIJJkAqY7OHVjF6SIHPUkiCMJREraY/vQQJFvw6VBEmCjBHZ0V8UMuRJgiRBRgSSIHNjOAVBnJvmDLGYpTZDrAkCm9ukV0iQm/SK0SJQJOUnhw1E/iTFqKU72T2IZI8kRalljzT5mVudEBb/AjlQP4QJ6ofmjfpp816bIOJ5olPYqPo5/NCGSGJYxmIJgsZGGS7thRkar0c4wXoXOaCaPaGkNse1CTKRwRnWWezptU0SpIJaKEGGUn6+6PfxsW+NkyCMufv7JEF6E+S+YmsXVjYJoqySSRC/sTM9kiBbJwiRuECGcKgQi7F4Z58zEMQdqYaGWEs9SBLEadIvzd3an/Y/A0HcALcJ4kM9N+lzFbCYuJW5sANNEKbKdKGs1e4CtFZNiorQ5Ms0VIUq6dfaD6UYtUrfmTE88au5ByE8SKuaV6vMRZhoc5MsFkrrmzF5mqeMuRX7Us9G9q2RPUx/+ZhUlWYpBZ3Ny1S1sqsl+rzU/wnADU8WkzW/B1mu+RVG8BHE13oF8RcZQxJkrqGdEyTeQONHXIsWj+ewq+UxCFLXIIvJzgkSb3xJkHo2BIZYCmgZYvk26fHW3GHEJEgd1NA9yFDK94t+3VjuQToYdtSQhyfIh3F+Uaz9GCFW3RJcIdaTEWSIVYkoIovaoojrGQelCp/mNlsLJG2ppYC1QwgkNal9Wy4ya/1Q9TO6bkzNYt2Jr8kvaWpNr6iqlTmTuFX1HX2Vmsc2FrdlqlYXP3QjA7RfFM4FZY/9QYc2IDh61GI5r567isceHLcRVfNinJQgV2+SBLHbDSTIUMqPzOWG9se/r+W2CdJ3h5QEsdvd+z1IX1tQkdg2QewKtLd8AL0JgjT0niGWXbNdWp6PIA8YN0GQhlaTIF3M3j5oEqSOFZPudJ9qYogakiB2W+7SUnQkK+laPzEirfITySAv07SKSxlPS0/Kh0NamlH6aVewaX9HKUutj8yrRxYLYcLKKRmu+W8oX4q+C5d5azYk/2Nu3RK80HVwjL1SdmJYxBhZ1D6o7Bs9iD20wX8NtAMRR9MeBFnzCjakGzb13VoQo0+Wcb08/RTOoeMQomyfICHTnA2SBPHhuosbpnxTsrVOgthw+mzFfg/SeIq6LjJ70mAPcpUtCeKzk2t5h7YHoVxn44Mpp3jN5ulBmhBNGiRBRjhsQd5hCbLgPUjuQXykoxZSm3kqghCdJyGWo7+fILfB/Zt0H+jW1ulBrEjd2m3Kg6CUIJO+k/GYA9RQak+IJVWotR9Kr6K5Cem0/9fTnT4lP7dmK1qlIldLd7JjolkgLLV+bEoZyYHGlH2ZZgvs3OCpJmjiGkHQS7EeX9ZJDltIEvlj3qRHPt8yVo+V1PLcLbdZ1RZQ1oLNTiRB4sxrZwRxBM08Rp0IMnyRmPz11yZIfc4n9yAvoPSzi50RhLd6R89OBKmH222C1CU/OUEc6lzWNAkyx+9bGcp3UPrCIL7CHuSximaIxaio3icJUiPIivvRc3qQdgqYeaMcR4vHSEmQrgQZV/VwD8IaQ1ipiTHsZ76/ZufG9mNJgGJxdP0Bg8naXxQiTNh5I/1MMHm2LdaDsMawkCBGWjykY4yBnRvbb1MEURA+FUGeFbkzgrhtMAkyh4zBJAlSMT0EittS7x0qHsTkFdi6I8YY2Lmx/TblQZRJVGxh1Bt7wSfC660hVnoQ1pT79NspQUYwkiCBdrFwD+KW5G0exOQXb9NJgszVuikPohWGyd/RMZvIWh9jTi3lexnKN+IlD/v9dQ+CRBcJyhGozOelKJsjetOOHkXf4ms6RQWo43fnjkVBnoMKI+8EqY7IzhvZq4oJmhPrOtkXhW73cO+wKKXpVGqPfRk7b7bkAhVpsrIw/dhr6dh5IxnpOwqZsu/dEMRJDgE4CdKgggPTIII4nqjLHkcQgzi7IQix7CVBCNCULkEECREojiAGcZIgBpACmrChxklCLMNS/lBCHEEMj+UJYhi8YliL9iBOQz2MB+GgdqKFm6cHqeDDpnkR1IchiNNo04PE8RV6EO37ccliMd/+otuN2DERFOjbcialKc+qHGV6Nd+WB0G3XcWp8zaS3GY1ed4TwUROLR2NbtZCMqKbyJh5Sx/tRi45n0DkrP0eN2T5VhSxPS21rNpQj1os9yHO0ZYTMJ6GC/sZcoBIriGiveratVitBVE7Iw31Q8f+qP3mhvBgZWu11AZNgrhsuUvjJMgc1iCCPAY+GUEm/jo9yNTA0oNU1rGTEWSCwIYJYgq804OkB+kSmnwOujpBTGZvn/JOCELNmv30IUMsu/00W65OkKZEvgY7IYhvUvfWhyCIlh7+AaQfKbQanVC2A53U+LcyrsivVd6i5ISEq1qaVFKPTJr0IeJ8IZZqWC3NK6lVLd2p4YX0JmPV07U3ubQx2XnLePIqofYTjLV5i97+9RpZM81LOUFdih4vCtGc2cOrmWu/2ewdew+hV9eW9tq8j1DZbZn/rE2TINSoIQQJoWYSxKfAJMgLXhsmiE+zSuskiA/GxQR5Wdb4ujyf3J+t0d6LGjEJUoctQ6wpLhliVeyEfQ+CmJp7kDk6uQeh1vZqp/QgTiwzxPIBtjjEenncaUMscbnMhTaSZmP6SWpPUo2136O6c/7fHgRhDliQeWvyIxOWdDOTAkZ4oedpc2vpW6vKlShEq8qV/zE3WiF9b8aDoJRmc80i8lP+OwpvUvgJchOOWUnZ1RIdccOGX+GGApTK7k/Yext7nM2rTo/dpC8iyFUaH0vWI8gNqiRIc5kbGyRBKlgtJ4hdAdLSSJAZ6/wepEaQx7DIGNKD+HSaHsSHF2xtJMhsjBiCPIbdKEFmC0OGWEuM7wnO94VYvgkkQXx4rUCQ0YoyxNpPiNXLg5iMIUMsH4l3E2Khi+pRJaaWrmVTuQheMT6tghOl/VC605BmnIUuaG6IIK00qTZ3lOZlU7k+M263ZvWNUsCCJTpbWLM9hIn8D1X6VmfqyyW1wZIWa2/gbVLNW6H9CQo9techgrz0mcA+SeU6FMKGnSxea/ZjT3dHMuph51B+/CjLr76TcejDjE8SxAzVtSH7riMJ4sOZ+ohs3wRZJv0bPchEs/0Isgwfn/nFtl7Xg5SiXpPRA8L0ID5j6UcQnxwbaD2aYxJkA9rAHsS/dDj2ICt5kA2ATIqwDkEeOk4PUlHU/kKsKWlzD+JjX5c9iBSG1X7s4QWyymrVnb7pLm+NDnRAWSx0LZ122AOSVkJSraoV4SV9tEMImIppkZG9ck+zE1ZLyIMgvCTlr1U/hxOELatgDy9gwezRTyNI/SOy28reY+91NRQl2mNPd0d4MV9Ssm/SkRzsxabo7KsdEGQov5YLvUr1III2po8gt1G6EUQRsj9BbPswniD6+CclSLmekcS68STIFIH+BLEhzhNEHz8JYsP+ba3Sg9ihfyGIze00hk+C2PF/S8skiB329CAVrFDO/3yb9KPuQWwk2RhBhr+UD0LpTTo6M1ZLP6IrvtBVV6ifTR2+Vuh6tlbqtfZ/kR+lNLXKaPQsSU1qaVkUaiCc0fMq19KNYdHdFqphErqqT7MT+buGlzxLw0sWWS1lLn00m0UHXKAr5OCLQp/J7at19JXHbOoboYZKTdhYHD1PNQbQiT0jjY0mECbs6e4UJkxZ954okgSZa+vtBLn7J5TRfAtBan4zCeI7YCU9iG95TA/iw2v11sCDUOnIJIhvQUmCrG7yvgfCC+KJuookiA9/hSDXxWlzIVZtahli+RSeBPHhdQgPIqus9pMNnfcnGQ8tJSiAaWk/WVGYNKmMp6X30CZdCtu8Z8NKew0v7UAAwQ/NG8lw5CwWwgulgCUlrl3xJxmuazq3EkAjO1F1gAJx9gVQj+NvEElRBSd7cJz2PDbdyV77cGSCIJ2yH0yhl4HuW26FHEkQn39MgvjwYiucN0EQxRONCKQHmRtDEiQJkgQBNnAOgszjCnbe6UEqxpR7kDkouQfxeZ4jhViz5WZVggylfL1YsljzVXHNkosYglDvNmeWuea8D+FBfNy+tV673H3VW4XuyQsvLuzC4H2OpX306e5oP4rCL5YgljnW2oRmsT436YwwSZA5ap0IQrmNJMhcP+40bxJEXxqYCoMAglBk8K6kzIKYHsSJ2gY9SJhxsQtHAEGcWtCb79CDhOgvQ6zKu81oY0iCzImXHsS5dj1Wyznx2QI1JEJu0n0Kil40kiAK/lpBWet7Yu1ieemnnYuFivZMBWo+G4Kt0R4EYaLNjS1WRAV9d7yqoclYtFeZJRpTA0WeJZvc2o8tTg1U1zjUy7wn2IRv0tn0neuU86cprP2ZJVIQc+wPq/D5vB+gsC/MkCzRnyGz8161X+N9mSrLUCtXvOtnFYI8SZYEmaspCRJHo316kHcSBORN3utBHqAkQZIgIwLpQdKDxNHhPtLTIpgeJBDd1TzIx4N+u5SiJTXSg8QpNQkSh+V1Z/byu65FbNk3Eo09OI493T1+kx7yji9Qe/WhuhCE+bYcpXIRCpLKRSspuhFKG9eQJq121b7FRylNGYhJoaJ5s99mo5Q5Igjqx2LJWL4JRycv0TfpIItVWyeZKW2zT/Q36WiWrvR2G66r+tl9mb5aDuWfclGJzISW/i9P25a96Fv89vBt9D9bGIryIh9XF6zjE3ZMkCtW8QS5ncqirdDrEKRtnzxBgo3JQJD2bDbcIgkyVw5PkLrx+T1I22B4grTHdrVIgrjggo0DQ6zREtODxOmHGikJQsFW7RRIkHH8JEicfqiRDkAQGHRmiBUZYtVN7PAhFrp5h2Ldyp3QTUvohik5vtJ79Cia2k/3TbV9+jduI/nR7VPoIpnKLVKjWAgTVLGLqrDREbWNG8yqCxy7B2FvN1Nvpgre89ttI7Al9QLofsauKd8eKGttKBRGoUeH3LQUYADsgd7opBcnQcZZIFug7ygkbgGwmUwA+JYHmQnyIk/8G2WLtPM2byUIJ/Kk1wYIMsqzL4IEgG8ZwkyQl8FOTRD74tVsmQSxWOkb2+yaII1ixe4hlkVvDYokQSwgvrHNrgly39hrNWibIEhDt0mQNxq/5dFJEAtK/dqcmiDaBff94K6PLKlCLePEEkQyJdqYqHI4GhNJ5appRgC0yCip5bV+GiYtgvyiCPj3B/4als4s1uJNuiRK/q3JicLLHi+AVGU24lyU0mQJggxLy+ytionN8pubaNswuBX6DqYHJmsThLLLuIkv12ESJMLM+TGSIBXs4gjCK+az5+4IsnxNWA5a4AhJkLcTBFvU7ghSN87d0mY5QXxTP1eI5cOmaloHIUjgmr7uUMsJ8iJvwybORZAAXR6MIAFLRgCojiFCCWKY/e4JIoBp6bsJ7hoYlb9L2k9Ld+6BIAgTNDdJYWvpWtQP2bekZH9QGjAvJVsEqaRrDTTQZyCYaFXA8iymClsw0dL6kuat/tg073Y/DlqklxEjJs3L3g+CVku2kJGqXAWM63HckcOBTZr2OOlfvbfxeARhYZ/260yQCexJEJ/OzkuQoZTfFcvcQ4iVHsRn6GzrBQRR/UF6EKc2OnuQiTTpQXzKWUAQ9UEbJciU0D0OKPBB/2g9JchDzlbdkXYSJfv1XO5B5hoMJchdtRslyHTyFEHYi1EazEkPMgVoA5v0mykPpXy76EWOxqvnZqHWsQjyMj1UrIgqdhFHJL1a+4kH0dLbYkQoNSkrX+2HQixJe7MpTW1+qBpZk/HLUMrP7W+zXzTTyCiCf0vaW6sebmGi6Q7pW1Li1RTwXMbl4QQb1lAe5H53nvb+hP2sVlCo/Wwr6RxVNsRisWT7afNmx2P79XhRiGRR7eToad73EGSuijcTxPxyKAnyorskSH1dWeZBNkMQMzE+r59PgqxDEIdiHgIdJ8RaiyAUzDDqSYKsQxAq9NwGQcZkyYI9yFoEoWBOglQQyD2I05a2F2LFe4saJOlB0oOMCKDza7WsWKuqVU2TgvSwPKuamuzECXQ2LyKI9hIUrT2SotYwQdfLqZg0FjpJD2updqlidmc7YzbpMZpcO8RSXw4BJSCCCPja4c+S09cOf2bfljud4ticv0DH/8S1MUEvCtH7sgyxKrpNgsxBiQ4tkyD+RUXtcVoPAqqYm/ASzht4kGGQco7Kz/aCdN7RTJCXebBeNT1IRXkV1znCHX2BTocQa/itlAvzlV+TPEqDDLHmwHhCrNG42MpVVnGn9SDgfngWS9QvCbKMIGPvJMgcyA4eBF71fC6CPOKs3YdYYijRtzO1rlLTqjup7ARzHu5QypePUmtt3ijeRnih1CRLEJTSRFfuMeltkVHL3iGdoswe6ocwQelhhLN6HR+b5mUVx/ZjP7nlihWJne+dcJqhoHmzlatozOjzilvvf9AdhZqciCCsnax6w9QRjh7lCMKpB3mQJMgcgQMShFtZOXOb9lrXg3ASJ0F8uB2QID4AIlsnQXxobjjEGlfZJMizThc6H5og9421z7y41ulBfLglQXx4wdY0QTpk2zRBkyA+hR+CIL4p92v9klqd+CM2zYukZbIyMp5W8SrkYQ5tQDLKuwJJT9Z+6KAHkVFLVWvz3lIWa8m8tRQ3dapJvLkvjLMUgXoQhPkuosfJikgH6Hwo1M/9Jv0epko/jYzMgsJ6EHbe1HnFfUw2nlpoxCSID283Qe4eJwniw3kzrcMJ8lFdO7TPgJrN/+5BqmtOj1NN2JU0CTI33Y2EWHfBgt3W11KGv5QybfZFYYZYUyPa0h6EXRgyxKr4tCTIHJT0IFv3IMHBWXiI9VF+nh4kPcgVgf8Dr37wgGuhMEIAAAAASUVORK5CYII=" alt="Dynamic QR Code" style="width: 100px; height: 100px;">
+        </div>
+
+        <div class="address">
+            <h5>Billing Address:</h5>
+            <p><strong><%= order.name %></strong></p>
+            <p><%= order.address %>, <%= order.city %>, <%= order.state %>, <%= order.postal_code %></p>
+            <p>IN</p>
+            <p>State/UT Code: 27</p>
+        </div>
+
+        <div class="address">
+            <h5>Shipping Address:</h5>
+            <p><strong><%= order.name %></strong></p>
+            <p><%= order.address %>, <%= order.city %>, <%= order.state %>, <%= order.postal_code %></p>
+            <p>IN</p>
+            <p>State/UT Code: 27</p>
+        </div>
+
+        <table class="table details">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% order.items.forEach(item => { %>
+                    <tr>
+                        <td><%= item.name %></td>
+                        <td><%= item.quantity %></td>
+                        <td>$<%= item.unitPrice.toFixed(2) %></td>
+                        <td>$<%= (item.quantity * item.unitPrice).toFixed(2) %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <div class="total">
+            Total Amount: $<%= order.totalAmount.toFixed(2) %>
+        </div>
+
+        <div class="footer">
+            <p>FARM FRESH ORGANIC:</p>
+            <p>Invoice Date: <%= new Date().toLocaleDateString() %></p>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

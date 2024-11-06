@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="icon" sizes="200x200" href="/img/tab-logo.png">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .text-danger {
+            display: none; /* Initially hide error messages */
+            color: red; /* Customize color */
+        }
+
+        .text-danger.visible {
+            display: block; /* Show error messages when they have the class 'visible' */
+        }
+    </style>
+</head>
+
+<body class="signupPage">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-3" href="/">
+                <img src="/img/logo.png" width="65" height="45" alt="Bootstrap Logo">&nbsp;&nbsp;FarmFreshOrganic
+            </a>
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/home">Farmstead</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                    <% if (username) { %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <%= username %>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><form action="/cart" method="GET"><button type="submit" class="dropdown-item">Cart</button></form></li>
+                                <li><form action="/orders" method="GET"><button type="submit" class="dropdown-item">My Orders</button></form></li>
+                                <li><form action="/logout" method="POST"><button type="submit" class="dropdown-item">Logout</button></form></li>
+                            </ul>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <% } %>
+                </ul>
+                <form class="d-flex ml-auto" action="/search" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success cust-btn" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container formctrn">
+        <form id="signupForm" action="/signup" method="POST">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5">Create a new Account</h2>
+                    <p style="margin: auto 0; font-size: small;">Already joined? <a href="/login">click here</a> to get back into your role😁</p>
+                </div>
+                <div class="card-body">
+                    <% if (message) { %>
+                        <div class="alert alert-danger"><%= message %></div>
+                    <% } %>
+                    <div class="form-group mb-3">
+                        <label for="name">Name:</label>
+                        <input type="text" name="name" id="name" class="form-control" value="<%= name %>" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" id="email" class="form-control" value="<%= email %>" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" id="username" class="form-control" value="<%= username %>" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" class="form-control" required>
+                        <small>Password must be at least 8 characters long, include at least one uppercase letter, one number, and one special character.</small>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="age">Age:</label>
+                        <input type="number" name="age" id="age" class="form-control" value="<%= age %>" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="gender">Gender:</label>
+                        <select name="gender" id="gender" class="form-control" required>
+                            <option value="" disabled>Select Gender</option>
+                            <option value="Male" <%= gender === 'Male' ? 'selected' : '' %>>Male</option>
+                            <option value="Female" <%= gender === 'Female' ? 'selected' : '' %>>Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-4">
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                        <label for="agreeTerms">I agree to the <a href="/terms">terms and conditions</a></label>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-auto">
+        <div class="container text-center">
+            <p>&copy; 2024 FarmFreshOrganic. All rights reserved.</p>
+            <p><a href="/privacy" class="text-white">Privacy Policy</a> | <a href="/terms" class="text-white">Terms of
+                    Service</a></p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function validateForm() {
+            let valid = true;
+
+            // Clear previous error messages
+            const errorElements = [
+                'nameError',
+                'emailError',
+                'usernameError',
+                'passwordError',
+                'ageError',
+                'genderError',
+                'termsError'
+            ];
+            
+            errorElements.forEach(id => {
+                const errorElement = document.getElementById(id);
+                errorElement.textContent = '';
+                errorElement.classList.remove('visible'); // Hide the error message
+            });
+
+            // Name validation
+            const name = document.getElementById('name').value.trim();
+            if (name === '') {
+                const nameError = document.getElementById('nameError');
+                nameError.textContent = 'Name is required.';
+                nameError.classList.add('visible'); // Show the error message
+                valid = false;
+            }
+
+            // Email validation
+            const email = document.getElementById('email').value.trim();
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                const emailError = document.getElementById('emailError');
+                emailError.textContent = 'Valid email is required.';
+                emailError.classList.add('visible'); // Show the error message
+                valid = false;
+            }
+
+            // Username validation
+            const username = document.getElementById('username').value.trim();
+            if (username === '') {
+                const usernameError = document.getElementById('usernameError');
+                usernameError.textContent = 'Username is required.';
+                usernameError.classList.add('visible'); // Show the error message
+                valid = false;
+            }
+
+            // Password validation
+            const password = document.getElementById('password').value;
+            const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+            if (!passwordPattern.test(password)) {
+                const passwordError = document.getElementById('passwordError');
+                passwordError.textContent = 'Password must meet the criteria.';
+                passwordError.classList.add('visible'); // Show the error message
+                valid = false;
+            }
+
+            // Age validation
+            const age = document.getElementById('age').value;
+            if (age === '' || isNaN(age) || age < 1) {
+                const ageError = document.getElementById('ageError');
+                ageError.textContent = 'Valid age is required.';
+                ageError.classList.add('visible'); // Show the error message
+                valid = false;
+            }
+
+            // Gender validation
+            const gender = document.getElementById('gender').value;
+            if (gender === '') {
+                const genderError = document.getElementById('genderError');
+                genderError.textContent = 'Gender is required.';
+                genderError.classList.add('visible'); // Show the error message
+                valid = false;
+            }
+
+            // Terms and conditions validation
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            if (!agreeTerms) {
+                const termsError = document.getElementById('termsError');
+                termsError.textContent = 'You must agree to the terms and conditions.';
+                termsError.classList.add('visible'); // Show the error message
+                valid = false;
+            }
+
+            return valid;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,505 @@
+/* Navbar custom CSS */
+
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    background-color: #ffffff !important;
+    
+}
+
+body .cust-nav {
+    /* background-color: #80ED99 !important; */
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #fff; /* Customize the text color */
+    z-index: 1000;
+}
+
+/* .cust-btn {
+    background-color: white; 
+}
+
+.cust-btn:hover {
+    background-color: transparent;
+} */
+
+
+/* Index.ejs */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.navbar-brand {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+header {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(0, 0, 0);
+    background-image: url('/img/vegetable-background.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-overlay {
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white overlay for better text readability */
+    padding: 80px;
+    border-radius: 8px; /* Optional: gives the content a softer look */
+    max-width: 1000px; /* Add a maximum width to limit excessive stretching on large screens */
+    width: 100%;
+}
+
+header h1 {
+    color: #333333; /* Dark gray for professional look */
+}
+
+header p {
+    color: #555555; /* Medium gray for the paragraph text */
+}
+
+.btn-success {
+    background-color: #28a745; /* Bootstrap green */
+    border-color: #28a745;
+    color: #ffffff; /* White text for contrast with the green button */
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+
+@media (max-width: 768px) {
+    header {
+        background-position: top; /* Adjust background positioning for smaller screens */
+    }
+
+    .bg-overlay {
+        padding: 100px 10px; /* Reduce padding on smaller screens */
+        max-width: 90%; /* Reduce max-width for smaller screens */
+    }
+}
+
+
+
+
+
+/* For Home Page */
+
+.cust-container-fluid {
+    padding: 0;
+    margin: 0;
+}
+
+.custom-carousel {
+    margin-top: 0 !important;
+    cursor: pointer;
+}
+
+.custom-carousel-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.5rem;
+    margin: 0;
+    align-items: center;
+    text-align: center;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.custom-carousel-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.custom-carousel-item img {
+    height: 76vh;
+    object-fit: cover;
+    width: 100%;
+    border-bottom: 1px solid #dee2e6;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.custom-carousel-item h5 {
+    margin-top: 15px;
+    font-size: 1.5rem;
+}
+
+.custom-carousel-item p {
+    font-size: 1rem;
+    margin-top: 5px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+.slide-number {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #007bff;
+    font-weight: bold;
+}
+
+
+.container {
+    padding: 20px; /* Add some padding to the container */
+}
+
+
+
+.services {
+    text-align: center; /* Center text */
+}
+
+.service-item {
+    flex: 0 0 auto; /* Prevent shrinking */
+    margin: 0 15px; /* Add some margin between items */
+    width: 150px; /* Fixed width for items */
+}
+
+.shead {
+    font-size: 1.5rem; /* Responsive font size for headings */
+    margin-top: 10px; /* Space above headings */
+}
+
+.stxt {
+    color: #575555;
+    margin-top: 5px; /* Space above text */
+    font-size: 0.875rem; /* Base font size for paragraph */
+    line-height: 1.5; /* Line height for readability */
+}
+
+/* Responsive Font Sizes */
+@media (max-width: 768px) {
+    .shead {
+        font-size: 1.25rem; /* Smaller headings on mobile */
+    }
+    
+    .stxt {
+        font-size: 0.75rem; /* Smaller text on mobile */
+    }
+}
+
+@media (max-width: 576px) {
+    .shead {
+        font-size: 1.1rem; /* Even smaller headings on smaller screens */
+    }
+    
+    .stxt {
+        font-size: 0.65rem; /* Even smaller text on smaller screens */
+    }
+}
+
+body {
+    background-color: #f8f9fa; /* Light background color */
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+.feature-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    transition: transform 0.3s;
+}
+
+.feature-card:hover {
+    transform: scale(1.05);
+}
+
+.feature-icon {
+    width: 80px; /* Adjust icon size */
+    height: 80px;
+    margin-bottom: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* for products page */
+
+.products-container {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.products-container h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.prodImg {
+    width: 70%;
+}
+
+/* Remove default blue color and add glow effect */
+.list-group-item a {
+    color: #000; /* Black color for links */
+    transition: all 0.3s ease; /* Smooth transition */
+    text-decoration: none;
+}
+
+.list-group-item a:hover {
+    text-decoration: none; /* Remove underline on hover */
+}
+
+.list-group-item a.active {
+    color: #000; /* Ensure text color is black when active */
+    background-color: rgb(191, 255, 205); /* Light background color */
+    box-shadow: 0 0 10px rgba(138, 231, 180, 0.5); /* Glow effect */
+}
+
+
+/* General Styles */
+.cust-btn {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.cust-btn:hover {
+    background-color: #218838;
+}
+
+/* Card Styles */
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.prodCard {
+    width: 100%; /* Make card take full width of parent container */
+    cursor: pointer;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-footer {
+    background-color: #fff;
+    border-top: none;
+}
+
+.btn-primary {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+}
+
+/* Media Queries */
+@media (max-width: 992px) {
+    .prodCard {
+        width: 80%; /* Slightly smaller card for medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .prodCard {
+        width: 100%; /* Full width on small screens */
+    }
+}
+
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+    width: 100%;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    color: #28a745;
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+/* login */
+
+.signupPage::-webkit-scrollbar {
+    display: none;
+}
+
+.formctrn {
+    width: 100%;
+    margin-top: 4%;
+}
+
+.formctrn input {
+    margin-bottom: 1rem;
+}
+
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+    position: relative;
+}
+  
+img.avatar {
+    width: 40%;
+    border-radius: 50%;
+}
+
+
+
+/* About.ejs */
+
+/* public/css/styles.css */
+h1 {
+
+    font-weight: bold;
+}
+
+h3 {
+    color: #2F4F4F;
+}
+
+p, ul {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+img {
+    border-radius: 8px;
+}
+
+.container {
+    padding: 50px 15px;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+}
+
+
+/* Successful Login */
+
+.cust-container {
+    height: 69vh;
+}
+
+
+/* orders */
+
+/* Ensure footer sticks to the bottom */
+html, body {
+    height: 100%;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+.container {
+    flex: 1; /* This allows the container to take up remaining space */
+}
+
+/* Print styles for receipt */
+@media print {
+    #receipt {
+        display: block;
+    }
+    #printReceipt, #generateReceipt {
+        display: none; /* Hide buttons when printing */
+    }
+}
+#receipt {
+    display: none; /* Initially hidden */
+    border: 1px solid #000;
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+/* Additional styles for receipt */
+.receipt-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.receipt-header h2 {
+    margin: 0;
+}
+.receipt-footer {
+    margin-top: 20px;
+    text-align: center;
+}
+.receipt-table th, .receipt-table td {
+    text-align: center;
+}

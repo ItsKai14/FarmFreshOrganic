@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmFreshOrganic - Cart</title>
+    <link rel="icon" sizes="200x200" href="/img/tab-logo.png">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-3" href="/">
+                <img src="/img/logo.png" width="65" height="45" alt="Bootstrap Logo">&nbsp;&nbsp;FarmFreshOrganic
+            </a>
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/home">Farmstead</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                    <% if (username) { %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <%= username %>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><form action="/cart" method="GET"><button type="submit" class="dropdown-item">Cart</button></form></li>
+                                <li><form action="/orders" method="GET"><button type="submit" class="dropdown-item">My Orders</button></form></li>
+                                <li><form action="/logout" method="POST"><button type="submit" class="dropdown-item">Logout</button></form></li>
+                            </ul>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <% } %>
+                </ul>
+                <form class="d-flex ml-auto" action="/search" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success cust-btn" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-5 p-2">
+        <h1>Your Shopping Cart</h1>
+
+        <!-- Success or Error Message -->
+        <% if (message) { %>
+            <div class="alert alert-success mt-3"><%= message %></div>
+        <% } %>
+        <% if (error) { %>
+            <div class="alert alert-danger mt-3"><%= error %></div>
+        <% } %>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% cartItems.forEach(item => { %>
+                    <tr>
+                        <td><%= item.prodName %></td>
+                        <td>₹<%= item.sellingP %></td>
+                        <td>
+                            <!-- Update Quantity Form -->
+                            <form action="/cart/update/<%= item.id %>" method="POST" class="d-inline">
+                                <input type="number" name="quantity" value="<%= item.quantity %>" min="1" class="form-control d-inline w-auto">
+                                <button type="submit" class="btn btn-outline-primary btn-sm">Update</button>
+                            </form>
+                        </td>
+                        <td>
+                            <!-- View Product Button -->
+                            <form action="/products/<%= item.prodId %>" method="GET" class="d-inline">
+                                <button class="btn btn-info btn-sm">View Product</button>
+                            </form>
+                            <!-- Remove Item Form -->
+                            <form action="/cart/remove/<%= item.id %>" method="POST" class="d-inline">
+                                <button class="btn btn-danger btn-sm">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <!-- Total Price Calculation -->
+        <div class="mt-4">
+            <h4>Total: ₹<%= cartItems.reduce((total, item) => total + (item.sellingP * item.quantity), 0).toFixed(2) %></h4>
+        </div>
+
+        <a href="/products" class="btn btn-primary">Continue Shopping</a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-auto">
+        <div class="container text-center">
+            <p>&copy; 2024 FarmFreshOrganic. All rights reserved.</p>
+            <p><a href="/privacy" class="text-white">Privacy Policy</a> | <a href="/terms" class="text-white">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<section id="categories" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Shop by Category</h2>
+        <div class="row">
+            <% categories.forEach(category => { %>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="<%= category.image_url %>" class="card-img-top" alt="<%= category.name %>">
+                    <div class="card-body text-center">
+                        <h5 class="card-title"><%= category.name %></h5>
+                        <a href="/category/<%= category.id %>" class="btn btn-primary">Explore</a>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<section id="products" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4">Popular Products</h2>
+        <div class="row">
+            <% products.forEach(product => { %>
+            <div class="col-md-3">
+                <div class="card mb-4">
+                    <img src="<%= product.image_url %>" class="card-img-top" alt="<%= product.name %>">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= product.name %></h5>
+                        <p class="card-text">Price: ₹<%= product.price %></p>
+                        <a href="/product/<%= product.id %>" class="btn btn-success">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+
+<form id="loginForm" name="loginForm" action="/login" method="POST" novalidate>
+    <!-- Step 1: Username and Password Form -->
+    <% if (step === 1) { %>
+        <form action="/login" method="POST">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5">Step 1: User Credentials</h2>
+                    <p style="margin: auto 0; font-size: small;">Please <a href="/signup">click here</a> if you're a new visitor😊</p>
+                </div>
+                <div class="card-body">
+                    <div class="imgcontainer">
+                        <img src="/img/img_avatar2.png" alt="Avatar" class="avatar">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" id="username" class="form-control" required autocomplete="username">
+                        <div class="text-danger" id="usernameError" style="display: none;">Username is required.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" class="form-control" required autocomplete="current-password">
+                        <div class="text-danger" id="passwordError" style="display: none;">Password is required.</div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-success cust-btn">Next</button>
+        </form>
+    <% } %>
+    
+    <!-- Step 2: Verification Code Form -->
+    <% if (step === 2) { %>
+        <form action="/login" method="POST">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5">Step 2: Verification Code</h2>
+                </div>
+                <div class="card-body">
+                    <div class="imgcontainer">
+                        <img src="/img/auth.jpg" alt="Avatar" class="avatar">
+                    </div>
+                    <div class="form-group">
+                        <label for="verificationCode">Verification Code:</label>
+                        <label for="verificationCode">(A mail is sent to your registered email)</label>
+                        <input type="text" id="verificationCode" class="form-control" required>
+                        <div class="text-danger" id="verificationCodeError" style="display: none;">Verification code is required.</div>
+                    </div>
+                    <button type="button" class="btn btn-outline-success cust-btn" onclick="submitVerificationCode()">Submit Code</button>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-success cust-btn">Submit Code</button>
+        </form>
+    <% } %>
+    
+    <!-- Final Step: Confirmation -->
+    <% if (step === 3) { %>
+        <p>Login successful! Redirecting...</p>
+    <% } %>
+</form>
+
+
+
+<% if (message) { %>
+    <div class="alert alert-<%= message.type %>">
+        <%= message.text %>
+    </div>
+<% } %>
+
+<% if (step === 1) { %>
+    <!-- Step 1: Username and Password Form -->
+    <div id="step1" class="step">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="h5">Step 1: User Credentials</h2>
+                <p style="margin: auto 0; font-size: small;">Please <a href="/signup">click here</a> if you're a new visitor.</p>
+            </div>
+            <div class="card-body">
+                <div class="imgcontainer">
+                    <img src="/img/img_avatar2.png" alt="Avatar" class="avatar">
+                </div>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" id="username" class="form-control" required autocomplete="username">
+                    <div class="text-danger" id="usernameError" style="display: none;">Username is required.</div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" class="form-control" required autocomplete="current-password">
+                    <div class="text-danger" id="passwordError" style="display: none;">Password is required.</div>
+                </div>
+                <button type="button" class="btn btn-outline-success cust-btn" onclick="nextStep(1)">Next</button>
+            </div>
+        </div>
+    </div>
+<% } else if (step === 2) { %>
+    <!-- Step 2: Verification Code Form -->
+    <div id="step2" class="step" style="display: none;">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="h5">Step 2: Verification Code</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="verificationCode">Verification Code (sent to your email):</label>
+                    <input type="text" id="verificationCode" class="form-control" required>
+                    <div class="text-danger" id="verificationCodeError" style="display: none;">Verification code is required.</div>
+                </div>
+                <button type="button" class="btn btn-outline-success cust-btn" onclick="submitVerificationCode()">Submit Code</button>
+            </div>
+        </div>
+    </div>
+<% } else if (step === 3) { %>
+    <!-- Step 3: Successful Login -->
+    <div id="step3" class="step" style="display: none;">
+        <p>Login successful! Redirecting...</p>
+    </div>
+<% } %>
+

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.prodName %> - Product Details</title>
+    <link rel="icon" sizes="200x200" href="/img/tab-logo.png">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .product-image {
+            max-height: 400px;
+            object-fit: cover;
+        }
+        .shipping-address {
+            display: none; /* Hide the shipping address form by default */
+        }
+    </style>
+    <script>
+        function toggleShippingAddress() {
+            const shippingForm = document.getElementById('shipping-address-form');
+            shippingForm.style.display = shippingForm.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-3" href="/">
+                <img src="/img/logo.png" width="65" height="45" alt="Bootstrap Logo">&nbsp;&nbsp;FarmFreshOrganic
+            </a>
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/home">Farmstead</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                    <% if (username) { %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <%= username %>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><form action="/cart" method="GET"><button type="submit" class="dropdown-item">Cart</button></form></li>
+                                <li><form action="/orders" method="GET"><button type="submit" class="dropdown-item">My Orders</button></form></li>
+                                <li><form action="/logout" method="POST"><button type="submit" class="dropdown-item">Logout</button></form></li>
+                            </ul>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <% } %>
+                </ul>
+                <form class="d-flex ml-auto" action="/search" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success cust-btn" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4"><%= product.prodName %></h1>
+        <div class="row">
+            <div class="col-md-6">
+                <img src="<%= product.imgURL %><%= product.prodId %>.png" alt="<%= product.prodName %>" class="img-fluid product-image">
+            </div>
+            <div class="col-md-6">
+                <h3>Details</h3>
+                <p><strong>Category:</strong> <%= product.category_name %></p>
+                <p><strong>Description:</strong> <%= product.description || 'No description available' %></p>
+                <p><strong>Price:</strong> ₹<%= product.price %> For <%= product.quant %></p>
+                <% if (product.vitamin_content) { %>
+                    <p><strong>Vitamin Content:</strong> <%= product.vitamin_content %></p>
+                <% } %>
+                <% if (product.sweetness_level) { %>
+                    <p><strong>Sweetness Level:</strong> <%= product.sweetness_level %></p>
+                <% } %>
+                <% if (product.rarity_level) { %>
+                    <p><strong>Rarity Level:</strong> <%= product.rarity_level %></p>
+                <% } %>
+                <p><strong>Free Delivery</strong> in about 4 Hrs</p>
+
+                <!-- Quantity Selection -->
+                <form id="buy-now-form" action="/order/checkout/<%= product.prodId %>" method="POST" class="mt-2">
+                    <div class="form-group mb-4">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1" required>
+                    </div>
+                    <button type="button" class="btn btn-success" onclick="toggleShippingAddress()">Buy Now</button>
+                </form>
+
+                <!-- Shipping Address Form -->
+                <% if (err) { %>
+                    <div class="alert alert-danger"><%= err %></div>
+                <% } %>
+                <div id="shipping-address-form" class="shipping-address mt-4">
+                    <h4>Shipping Address</h4>
+                    <form action="/order/checkout/<%= product.prodId %>" method="POST">
+                        <input type="hidden" name="quantity" id="hidden-quantity" value="1">
+                        <div class="form-group">
+                            <label for="name">Full Name:</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address:</label>
+                            <input type="text" class="form-control" name="address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City:</label>
+                            <input type="text" class="form-control" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State:</label>
+                            <input type="text" class="form-control" name="state" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="postal-code">Postal Code:</label>
+                            <input type="text" class="form-control" name="postal-code" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number:</label>
+                            <input type="text" class="form-control" name="phone" required>
+                        </div>
+                        <div class="form-group mb-4">
+                            <h5>Payment Method</h5>
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="radio1" value="option1" checked>
+                            <label class="form-check-label" for="radio1">
+                                Cash on Delivary (COD)
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Confirm Order</button>
+                    </form>
+                </div>
+
+                <form action="/cart/add/<%= product.prodId %>" method="POST" class="mt-2">
+                    <button class="btn btn-primary">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+        <a href="/products" class="btn btn-secondary mt-4">Back to Products</a>
+    </div>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2024 FarmFreshOrganic. All rights reserved.</p>
+            <p><a href="/privacy" class="text-white">Privacy Policy</a> | <a href="/terms" class="text-white">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

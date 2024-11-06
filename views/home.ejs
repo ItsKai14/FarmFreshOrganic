@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmFreshOrganic</title>
+    <link rel="icon" sizes="200x200" href="/img/tab-logo.png">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-3" href="/">
+                <img src="/img/logo.png" width="65" height="45" alt="Bootstrap Logo">&nbsp;&nbsp;FarmFreshOrganic
+            </a>
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="/home">Farmstead</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                    <% if (username) { %>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <%= username %>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><form action="/cart" method="GET"><button type="submit" class="dropdown-item">Cart</button></form></li>
+                                <li><form action="/orders" method="GET"><button type="submit" class="dropdown-item">My Orders</button></form></li>
+                                <li><form action="/logout" method="POST"><button type="submit" class="dropdown-item">Logout</button></form></li>
+                            </ul>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <% } %>
+                </ul>
+                <form class="d-flex ml-auto" action="/search" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success cust-btn" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid cust-container-fluid">
+        <!-- Carousel -->
+        <div id="carouselExampleIndicators" class="carousel slide custom-carousel" data-bs-ride="carousel">
+            <!-- Carousel Items -->
+            <div class="carousel-inner">
+                <% items.forEach(function(item, index) { %>
+                    <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                        <div class="custom-carousel-item" onclick="window.location.href='<%= item.url %>'">
+                            <img src="<%= item.img %>" alt="<%= item.title %>">
+                            <h5><%= item.title %></h5>
+                            <p><%= item.text %></p>
+                            <div class="slide-number">Slide <%= index + 1 %> of <%= items.length %></div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+    
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    
+
+    <div class="container-fluid mt-5">
+        <div class="services text-center">
+            <h1 class="mb-4">We ensure you're getting</h1>
+            <div class="serviceDiv d-flex justify-content-around flex-nowrap overflow-auto">
+                <!-- Safe Delivery -->
+                <div class="service-item d-flex flex-column align-items-center">
+                    <img src="/img/frontend/free-delivery.png" alt="Free Delivery" class="mb-3 img-fluid">
+                    <h2 class="shead">Free Delivery*</h2>
+                    <p class="stxt">On all orders above ₹500.</p>
+                </div>
+    
+                <!-- Best Prices -->
+                <div class="service-item d-flex flex-column align-items-center">
+                    <img src="/img/frontend/express-delivery.png" alt="Express Shipment" class="mb-3 img-fluid">
+                    <h2 class="shead">4hr Delivery*</h2>
+                    <p class="stxt">Delivering across Pune.</p>
+                </div>
+    
+                <!-- 100% Genuine -->
+                <div class="service-item d-flex flex-column align-items-center">
+                    <img src="/img/frontend/exchange.png" alt="Genuine" class="mb-3 img-fluid">
+                    <h2 class="shead">Easy returns</h2>
+                    <p class="stxt">For rotten products.</p>
+                </div>
+    
+                <!-- Customer Support -->
+                <div class="service-item d-flex flex-column align-items-center">
+                    <img src="/img/frontend/cash-on-delivery.png" alt="Support" class="mb-3 img-fluid">
+                    <h2 class="shead">COD</h2>
+                    <p class="stxt">Cash on Delivery.</p>
+                </div>
+    
+                <!-- Fast Support -->
+                <div class="service-item d-flex flex-column align-items-center">
+                    <img src="/img/frontend/customer-service.png" alt="Fast Support" class="mb-3 img-fluid">
+                    <h2 class="shead">Fast Support</h2>
+                    <p class="stxt">Between 7am to 10pm, Monday to Saturday.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Why Shop from FarmFreshOrganic?</h1>
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div class="feature-card">
+                    <img src="/img/frontend/fresh.png" alt="Fresh Produce" class="feature-icon">
+                    <h2>Fresh Produce</h2>
+                    <p>We source our vegetables and fruits directly from farmers to ensure maximum freshness.</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="feature-card">
+                    <img src="/img/frontend/quality.png" alt="Quality Assurance" class="feature-icon">
+                    <h2>Quality Assurance</h2>
+                    <p>Our products are inspected for quality and freshness before they reach you.</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="feature-card">
+                    <img src="/img/frontend/express-delivery.png" alt="Fast Delivery" class="feature-icon">
+                    <h2>Fast Delivery</h2>
+                    <p>Enjoy fast delivery right to your doorstep, ensuring you get your fresh produce.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-4 text-center">
+                <div class="feature-card">
+                    <img src="/img/frontend/customer-service.png" alt="Customer Support" class="feature-icon">
+                    <h2>24/7 Customer Support</h2>
+                    <p>Our friendly support team is here to assist you with any questions or concerns, anytime.</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="feature-card">
+                    <img src="/img/frontend/best-price.png" alt="Best Prices" class="feature-icon">
+                    <h2>Best Prices</h2>
+                    <p>We offer competitive prices to provide you the best value for your money.</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="feature-card">
+                    <img src="/img/frontend/sustainability.png" alt="Sustainability" class="feature-icon">
+                    <h2>Sustainable Practices</h2>
+                    <p>We use sustainable farming practices to protect the environment and support local farmers.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-auto">
+        <div class="container text-center">
+            <p>&copy; 2024 FarmFreshOrganic. All rights reserved.</p>
+            <p><a href="/privacy" class="text-white">Privacy Policy</a> | <a href="/terms" class="text-white">Terms of Service</a></p>
+        </div>
+    </footer>
+    
+    
+    
+    
+    
+    
+    
+    <script src="/js/script.js"></script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
